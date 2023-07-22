@@ -1,0 +1,21 @@
+{% extends 'DMS/base.html' %}
+{% block title %}
+<title>EDMS</title>
+{% endblock title %}
+  {% block content %}
+  <main class="container p-5">
+    <div class="media">
+    <img class="rounded-circle account-img" src="{{ object.profile.image.url }}">
+    <div class="media-body">
+      <h2 class="account-heading">{{ object.username }}</h2>
+      <p class="text-secondary">{{ object.last_name }} {{object.first_name}}</p>
+      <p class="text-secondary">{{ object.email }}</p>
+      <h3 class="account-heading">Groups</h3>
+      {% for group in object.groups.all %}
+      <p class="text-secondary">{{ group.name }}</p>
+      {% endfor %}
+    </div>
+    </div>
+    </main>
+    {% endblock content %}  
+      

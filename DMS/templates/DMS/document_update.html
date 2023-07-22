@@ -1,0 +1,16 @@
+{% extends 'DMS/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+<title>EDMS</title>
+{% endblock title %}
+  {% block content %}
+  <main class="container p-5">
+    <form method="POST" enctype="multipart/form-data">
+      <legend class="border-bottom mb-4">Update file</legend>
+        {% csrf_token %}
+          {{ form|crispy }}
+          <button type="submit" class="btn btn-dark">Update</button>
+        </form>
+    </main>
+    {% endblock content %}  
+      

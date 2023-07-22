@@ -1,0 +1,56 @@
+{% extends 'DMS/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+    <title>OCR</title>
+    {% endblock title %}
+
+{% block content %}
+<main class="container p-5">
+
+    <div style="text-align: center;">
+        <form enctype="multipart/form-data" id="OCR" action="{% url 'image_ocr' %}" method="POST">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button type="submit" class="btn btn-dark">Extract text</button>
+        </form>
+        <div id="render">
+            
+        </div>
+    </div>
+</main>
+{% endblock content %}
+{% block script %}
+<script>
+    $(document).ready(function(){ 
+        function FileUpload(){
+            var fd = new FormData();
+            fd.append('file', getFile())
+            $.ajax({
+                url: "{% url 'image_ocr' %}",
+                type: "POST",
+                data: fd,
+                processData: false,
+                contentType: false,
+                success: function(data){
+                    if(data.text){
+                        $('#render').html(
+                            "<div>" + data.text + "</div>"
+                        )
+                    }  
+                }
+            })
+        }
+
+        function getFile(){
+            var fp = $("#file_id")
+            var item = fp[0].files
+            return item[0]
+        }
+
+        $("#OCR").on('submit', function(event){
+            event.preventDefault();
+            FileUpload()
+        })
+    });
+</script>
+{% endblock script %}

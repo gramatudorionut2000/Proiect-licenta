@@ -1,0 +1,21 @@
+{% extends 'DMS/base.html' %}
+{% load crispy_forms_tags %}
+    {% block title %}
+    <title>Login page</title>
+    {% endblock title %}
+
+  {% block content %}
+  <main class="container p-5">
+    <legend class="border-bottom mb-4">Log in</legend>  
+    <form method="POST">
+      {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-dark">Login</button>
+        <small class="text-muted ms-2"><a class="me-2" href="{% url 'password_reset' %}">Forgot Password?</a></small>
+      </form>
+      <div class="border-top pt-3">
+        <small class="text-muted">If you need an account <a class="me-2" href="{% url 'register' %}">Create one now</a></small>
+      </div>
+    </div>
+    </main>
+    {% endblock content %}  

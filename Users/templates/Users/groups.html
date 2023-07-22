@@ -1,0 +1,96 @@
+{% extends 'DMS/base.html' %}
+{% load crispy_forms_tags %}
+    {% block title %}
+    <title>Group Management</title>
+    {% endblock title %}
+  {% block content %}
+  <main class="container p-5">  
+    <form method="POST" id='ADD'>
+    <legend class="border-bottom mb-4">Add to group</legend>
+      {% csrf_token %}
+        {{ a_form|crispy }}
+        <button type="submit" class="btn btn-dark" name="add" >Add</button>
+      </form>
+      <form method="POST" id='REMOVE'>
+        <legend class="border-bottom my-4">Remove from group</legend>
+          {% csrf_token %}
+            {{ r_form|crispy }}
+            <button type="submit" class="btn btn-dark" name="remove">Remove</button>
+          </form>
+    </main>
+{% endblock content %} 
+{% block script %}
+<script>
+  $(document).ready(function(){
+    $("#id_users:first").attr("id", "id_users_add");
+    $("#id_group:first").attr("id", "id_group_add");
+      $("#id_users_add").css('display', 'none');
+      function Add_user(){
+          var fd = new FormData();
+          fd.append('data', getGroupadd())
+          $.ajax({
+              url: "{% url 'get_users_add' %}",
+              type: "POST",
+              data:fd,
+              processData:false,
+              contentType: false,
+              success: function(response){
+                  if(response){
+                    var $select_add = $("#id_users_add");
+                    $select_add.empty();
+                    $.each(response, function(i) {
+                      $select_add.append($("<option></option>")
+                         .attr("value", response[i].id).text(response[i].name));
+                    });
+                    $("#id_users_add").css('display', 'inline')
+                  }  
+              }
+          })
+      }
+      function getGroupadd(){
+          var group = $("#id_group_add").val()
+          return group
+      }
+      
+      $("#id_group_add").mouseleave(function(){
+        Add_user()
+      })
+  });
+  
+  $(document).ready(function(){
+    $("#id_users:last").attr("id", "id_users_remove");
+    $("#id_group:last").attr("id", "id_group_remove");
+      $("#id_users_remove").css('display', 'none');
+      function Remove_user(){
+          var fd = new FormData();
+          fd.append('data', getGroupremove())
+          $.ajax({
+              url: "{% url 'get_users_remove' %}",
+              type: "POST",
+              data:fd,
+              processData:false,
+              contentType: false,
+              success: function(response){
+                  if(response){
+                    var $select_remove = $("#id_users_remove");
+                    $select_remove.empty();
+                    $.each(response, function(i) {
+                      $select_remove.append($("<option></option>")
+                         .attr("value", response[i].id).text(response[i].name));
+                    });
+                    $("#id_users_remove").css('display', 'inline')
+                  }  
+              }
+          })
+      }
+      function getGroupremove(){
+          var group = $("#id_group_remove").val()
+          return group
+      }
+      
+      $("#id_group_remove").mouseleave(function(){
+          Remove_user()
+      });
+  });
+</script>
+{% endblock script %}

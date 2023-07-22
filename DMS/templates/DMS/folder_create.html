@@ -1,0 +1,22 @@
+{% extends 'DMS/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+    <title>Create a folder</title>
+    {% endblock title %}
+{% block content %}
+{% if messages %}
+     {% for message in messages %}
+         <div class="text-center alert alert-{{ message.tags }}">
+             {{ message }}
+         </div>
+     {% endfor %}
+ {% endif %}
+<main class="container p-5">
+    <form method="POST">
+        <legend class="border-bottom mb-4">Create a Folder</legend>
+        {% csrf_token %}
+        {{ form|crispy }}
+          <button type="submit" class="btn btn-dark">Create</button>
+    </form>
+</main>
+{% endblock %}

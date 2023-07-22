@@ -1,0 +1,17 @@
+{% extends 'DMS/base.html' %}
+{% block title %}
+    <title>Confirm Restore</title>
+    {% endblock title %}
+
+  {% block content %}
+  <main class="container p-5">  
+    <form method="POST">
+    <legend class="border-bottom mb-4">Restore document</legend>
+    <h2>Are you sure you want to restore the document {{document.name}}?</h2>
+      {% csrf_token %}
+        <a href="{% url 'document-restore' document.id nr %}" class="btn btn-dark">Restore</a>
+        <a href="{% url 'document-detail' document.id %}" class="btn btn-dark">Cancel</a>
+        
+      </form>
+    </main>
+    {% endblock content %}  

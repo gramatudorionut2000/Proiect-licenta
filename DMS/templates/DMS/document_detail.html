@@ -1,0 +1,37 @@
+{% extends 'DMS/base.html' %}
+    {% block title %}
+    <title>Document detail</title>
+    {% endblock title %}
+    {% block content %}
+    <main class="container p-5">
+        <table class="table table-sm">
+            <tr>
+                <th>document</th>
+            </tr>
+            <tr>
+                <td>{{object.author.username}}</td>
+                <td>{{object.date_posted}}</td>
+                <td>{{object.description}}</td>
+                <td><a href={% url 'document_download' object.id %}> Download File</a></td>
+            </tr>
+        </table>
+        <div>
+            {% if valid == 'True' %}
+            {% if object.extension == 'txt' or object.extension == 'docx' %}
+            {% for paragraph in content %}
+            <p>
+                {{paragraph}}
+            </p>
+            {% endfor %}
+            {% else %}
+            {{content}}
+            {% endif %}
+            {% endif %}
+        </div>
+        {% if object.author == user %}
+        <a href="{% url 'document-delete' object.id %}" class="btn btn-danger btn-sm">Delete File</a>
+        <a href="{% url 'document-update' object.id %}" class="btn btn-dark btn-sm">Update File</a>
+        <a href="{% url 'document-version-list' object.id %}" class="btn btn-dark btn-sm">Restore to a previous version</a>
+        {% endif %}
+    </main>
+    {% endblock content %}

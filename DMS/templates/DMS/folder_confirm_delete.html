@@ -1,0 +1,17 @@
+{% extends 'DMS/base.html' %}
+{% block title %}
+    <title>Confirm deletion</title>
+    {% endblock title %}
+
+
+  {% block content %}
+  <main class="container p-5">  
+    <form method="POST">
+    <legend class="border-bottom mb-4">Delete Folder</legend>
+    <h2>Are you sure you want to delete the Folder {{object.name}}?</h2>
+      {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a href="{% url 'folders' %}" class="btn btn-dark">Cancel</a>
+      </form>
+    </main>
+    {% endblock content %}  

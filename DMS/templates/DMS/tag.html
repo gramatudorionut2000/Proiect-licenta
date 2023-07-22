@@ -1,0 +1,33 @@
+{% extends 'DMS/base.html' %}
+{% load crispy_forms_tags %}
+{% load index %}
+{% block title %}
+    <title>Tags</title>
+    {% endblock title %}
+{% block content %}
+<main class="container p-5">
+    <table class="table table-sm">
+        <tr>
+            <th>Tags</th>
+        </tr>
+        {{forloop.counter0}}
+        {% for tag in tags %}
+        <tr>
+            <td>{{tag.name}} ({{ tag_numbers|index:forloop.counter0 }})
+                {% if request.user.is_staff or request.user.is_superuser %}
+                <a href="{% url 'tag-delete' tag.id %}" class="btn btn-danger btn-sm">Delete Tag</a></td>
+                {% endif %}
+
+        </tr>
+        {% endfor %}
+    </table>
+    {% if request.user.is_manager%}
+    <form method="POST">
+        <legend class="border-bottom mb-4">Create Tag</legend>
+        {% csrf_token %}
+        {{ form|crispy }}
+          <button type="submit" class="btn btn-dark">Create</button>
+    </form>
+    {% endif %}
+</main>
+{% endblock content %}

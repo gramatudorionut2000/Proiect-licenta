@@ -1,0 +1,37 @@
+{% extends 'DMS/base.html' %}
+    {% block title %}
+    <title>Restore an older version</title>
+    {% endblock title %}
+    {% block content %}
+    <main class="container p-5">
+        <table class="table table-sm">
+            <tr>
+                <th>Older version of the document {{document.name}}</th>
+            </tr>
+            {{ forloop.counter0 }}
+            {% for versions,blacklists,tags in data %}
+            <tr>{% if forloop.counter0 == 1 %}
+                    <td>Previous Version</td>
+                    <td>Description:{{versions.field_dict.description}}, 
+                        Short_Description:{{versions.field_dict.short_description}}, 
+                        Tags:{{tags}}, 
+                        Blacklist:{{blacklists}},
+                        Global:{{versions.field_dict.is_global}}
+                    </td>
+                    <td><a href="{% url 'document_confirm_restore' document.id forloop.counter0 %}" class="btn btn-dark">Restore</a></td>
+                {% elif forloop.counter0 > 1 %}
+                <td>{{forloop.counter0}} versions ago</td>
+                <td>Description:{{versions.field_dict.description}}, 
+                    Short_Description:{{versions.field_dict.short_description}}, 
+                    Tags:{{tags}}, 
+                    Blacklist:{{blacklists}}
+                    Global:{{versions.field_dict.is_global}}
+                </td>
+                </td>
+                <td><a href="{% url 'document_confirm_restore' document.id forloop.counter0 %}" class="btn btn-dark">Restore</a></td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </table>
+    </main>
+    {% endblock content %}

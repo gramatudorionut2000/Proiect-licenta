@@ -1,0 +1,63 @@
+{% extends 'DMS/base.html' %}
+{% load crispy_forms_tags %}
+    {% block title %}
+    <title>Home page</title>
+    {% endblock title %}
+    {% block content %}
+    <main class="container p-5">
+        <div class="row">
+            <legend>Search bar</legend>
+            <div class="col">
+                <div class="card card-body bg-light border-dark">
+                    <div class='grid'>
+                    <form method="'get">
+                        {% crispy filter.form %}
+                    </form>
+                </div>
+                </div>
+            </div>
+        </div>
+        <table class="table table-sm table-Secondary table-striped mt-5">
+            <tr class="table table-dark">
+                <th>document</th>
+                <th data-bs-toggle="tooltip" data-bs-placement="top" title="See the profile of the user who uploaded this file ">Author </th>
+                <th>Date</th>
+                <th>Format</th>
+                <th data-bs-toggle="tooltip" data-bs-placement="top" title="Update,delete, restore an older version of the file & see a more descriptive version ">Description</th>
+                <th>Download link</th>
+            </tr>
+
+            {% for document in documents %}
+            <tr>
+                <td>{{ document.name }}</td>
+                <td><a data-bs-toggle="tooltip" data-bs-placement="top" title="See the profile of the user who uploaded this file " href="{% url 'Users-profile_data' document.author.id %}" target="_blank"><img src="{{document.author.profile.image.url}}" class="rounded-circle me-2" style="width:3em; height:3em;">{{document.author.username}}</a></td>
+                <td>{{document.date_posted}}</td>
+                <td>{{document.extension}}</td>
+                <td><a data-bs-toggle="tooltip" data-bs-placement="top" title="Update,delete, restore an older version of the file & see a more descriptive version " href="{% url 'document-detail' document.id %}">{{document.short_description}}</a></td>
+                <td><a class="btn btn-sm btn-dark" href="{% url 'document_download' document.id %}">Download File</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% if is_paginated %}
+
+            {%if page_obj.has_previous%}
+                <a class="btn btn-outline-dark mb-4" href="?page=1">First</a>
+                <a class="btn btn-outline-dark mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            {% endif %}
+
+            {% for nr in page_obj.paginator.page_range %}
+                {% if page_obj.number == nr %}
+                    <a class="btn btn-dark mb-4" href="?page={{ nr }}">{{ nr }}</a>
+                {% elif nr > page_obj.number|add:'-3' and nr < page_obj.number|add:'3' %}
+                    <a class="btn btn-outline-dark mb-4" href="?page={{ nr }}">{{ nr }}</a>
+                {% endif %}
+            {% endfor %}
+
+            {%if page_obj.has_next%}
+                <a class="btn btn-outline-dark mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+                <a class="btn btn-outline-dark mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+            {% endif %}
+
+        {% endif %}
+    </main>
+    {% endblock content %}

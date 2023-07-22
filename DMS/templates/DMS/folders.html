@@ -1,0 +1,19 @@
+{% extends 'DMS/base.html' %}
+{% block title %}
+    <title>Folders</title>
+    {% endblock title %}
+{% block content %}
+<main class="container p-5">
+    <table class="table table-sm">
+        <tr>
+            <th>Folders</th>
+        </tr>
+        {% for folder in folders %}
+        <tr>
+            <td> <p> {{folder.name}} <a href="{% url 'folder-delete' folder.id %}" class="ms-3 btn btn-danger btn-sm">Delete Folder</a></td> <p></td>
+
+        </tr>
+        {% endfor %}
+    </table>
+</main>
+{% endblock content %}
